@@ -34,7 +34,14 @@ export const PLANES_CONFIG = [
             "Bloqueo de Errores y Duplicados",
             "Centro de Reportes Avanzado",
             "Historial de Auditoría Permanente"
-        ]
+        ],
+        promo: {
+            activa: true,
+            texto: "Beneficio Comandante",
+            descuentoPorcentaje: 50,
+            cuposTotales: 3,
+            cuposDisponibles: 2
+        }
     },
     {
         id: "fase-2",
@@ -49,11 +56,18 @@ export const PLANES_CONFIG = [
         caracteristicas: [
             "Todo lo incluido en Fase 01",
             "Acceso Multi-Pantalla simultáneo",
-            "Nube Sincronizada (Google Firebase)",
-            "Conciliación Total de Dinero (Anti-Robo)",
+            "Infraestructura Google (Acceso Remoto Seguro)",
+            "Control de Efectivo Blindado (Anti-Robo)",
             "Optimización de Medios (Firebase Storage)",
-            "Notificaciones Web Push ilimitadas"
-        ]
+            "Reportes de Estado Automáticos"
+        ],
+        promo: {
+            activa: true,
+            texto: "Beneficio Comandante",
+            descuentoPorcentaje: 50,
+            cuposTotales: 3,
+            cuposDisponibles: 1
+        }
     },
     {
         id: "fase-3",
@@ -67,7 +81,7 @@ export const PLANES_CONFIG = [
         cta: "Solicitar Auditoría",
         caracteristicas: [
             "Todo lo incluido en Fase 02",
-            "Driver App Premium (Logística de Última Milla)",
+            "Delivery App Premium (Logística de Última Milla)",
             //"Trazabilidad absoluta en la calle",
             "Sistema de Multi-Atención Inteligente",
             "Protocolo de Acción Directa: Cero-Ruido",

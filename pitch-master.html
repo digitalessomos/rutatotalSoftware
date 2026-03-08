@@ -408,6 +408,15 @@
             </div>
             
             <div class="control-group">
+                <h3>🚀 Fase 2: Seguimiento</h3>
+                <div class="tone-list">
+                    <button class="btn-label" onclick="showPhase(2)" style="width: 100%; border-color: var(--success); background: rgba(0, 255, 170, 0.05);">
+                        <span>🎯</span> Cierre & Paz Operativa
+                    </button>
+                </div>
+            </div>
+
+            <div class="control-group">
                 <h3>Instrucciones</h3>
                 <p style="font-size: 0.75rem; color: var(--text-dim); line-height: 1.4;">
                     1. Elige nicho y tono.<br>
@@ -422,55 +431,110 @@
         <!-- Main Area: The Master Lab -->
         <div class="preview-panel" style="grid-column: span 2;">
             <div class="preview-header">
-                <span style="color: var(--accent-agent); font-size: 0.8rem; font-weight: 800;">🧪 AGENT LINK INTERFACE v1.0</span>
+                <div id="phaseTabs" style="display: flex; gap: 20px;">
+                    <span id="tab1" onclick="showPhase(1)" style="color: var(--accent-agent); font-size: 0.8rem; font-weight: 800; cursor: pointer; border-bottom: 2px solid var(--accent-agent);">FASE 1: EXPLORACIÓN</span>
+                    <span id="tab2" onclick="showPhase(2)" style="color: var(--text-dim); font-size: 0.8rem; font-weight: 800; cursor: pointer;">FASE 2: SEGUIMIENTO & CIERRE</span>
+                </div>
                 <span class="agent-badge">Generador_Pitch_RT360 Ready</span>
             </div>
 
             <div class="modal-content" style="width: 100%; border: none; box-shadow: none; background: transparent;">
-                <div class="lab-panels-wrapper">
-                    <div class="advisor-panel">
-                        <div style="color: var(--accent-agent); font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
-                            <span>🧠</span> PROMPT PARA EL AGENTE
+                <!-- Fase 1: Content (Ya existente) -->
+                <div id="phase1Content">
+                    <div class="lab-panels-wrapper">
+                        <div class="advisor-panel">
+                            <div style="color: var(--accent-agent); font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+                                <span>🧠</span> PROMPT PARA EL AGENTE
+                            </div>
+                            <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 1rem;">
+                                Copia este prompt y dáselo al Agente Antigravity para que redacte con su skill especializado.
+                            </p>
+                            <textarea id="masterPromptOutput" class="pitch-input" readonly placeholder="Configura los parámetros para generar el Master Prompt..."></textarea>
+                            
+                            <button class="master-prompt-btn" onclick="copyMasterPrompt()">
+                                <span>⚡ GENERAR Y COPIAR MASTER PROMPT</span>
+                            </button>
                         </div>
-                        <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 1rem;">
-                            Copia este prompt y dáselo al Agente Antigravity para que redacte con su skill especializado.
-                        </p>
-                        <textarea id="masterPromptOutput" class="pitch-input" readonly placeholder="Configura los parámetros para generar el Master Prompt..."></textarea>
-                        
-                        <button class="master-prompt-btn" onclick="copyMasterPrompt()">
-                            <span>⚡ GENERAR Y COPIAR MASTER PROMPT</span>
-                        </button>
+
+                        <div class="mandamientos-panel">
+                            <div style="color: var(--accent-secondary); font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+                                <span>📜</span> MANDAMIENTOS RT360 (Max 3)
+                            </div>
+                            <div id="mandamientosGrid" class="mandamientos-grid">
+                                <!-- Injected by JS -->
+                            </div>
+                            <div id="mandamientosCounter" style="color: var(--text-dim); font-size: 0.7rem; margin-top: 10px; text-align: right;">
+                                Seleccionados: 0/3
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="mandamientos-panel">
-                        <div style="color: var(--accent-secondary); font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
-                            <span>📜</span> MANDAMIENTOS RT360 (Max 3)
+                    <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem;">
+                        <div style="color: var(--success); font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                            <span>📥 1. PEGA AQUÍ EL RESULTADO DEL AGENTE</span>
+                            <button class="primary-btn" onclick="previewFinalPitch()" style="padding: 4px 12px; font-size: 0.7rem; background: var(--success); color: black; width: auto; flex: none;">👁️ PREVISUALIZAR</button>
                         </div>
-                        <div id="mandamientosGrid" class="mandamientos-grid">
-                            <!-- Injected by JS -->
-                        </div>
-                        <div id="mandamientosCounter" style="color: var(--text-dim); font-size: 0.7rem; margin-top: 10px; text-align: right;">
-                            Seleccionados: 0/3
+                        <textarea id="finalPitchInput" class="pitch-input" style="height: 120px; border-left-color: var(--success);" placeholder="Pega aquí el pitch que generó el Agente..."></textarea>
+                        
+                        <!-- Previsualización Dinámica -->
+                        <div id="finalPreviewContainer" style="display: none; margin-top: 1.5rem; animation: slideIn 0.3s ease-out;">
+                            <div style="color: var(--accent-primary); font-size: 0.8rem; font-weight: 800; margin-bottom: 0.5rem;">🚀 PITCH FINAL TRANSFORMADO</div>
+                            <div id="finalPreviewBox" style="background: rgba(0, 255, 170, 0.05); border: 1px solid rgba(0, 255, 170, 0.2); padding: 1.5rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; margin-bottom: 1.5rem; color: #fff;"></div>
+                            
+                            <div class="actions" style="padding: 0;">
+                                <button class="primary-btn bot-btn" onclick="sendToBot()">
+                                    <span>🤖 DESPLEGAR AL BOT COMANDANTE</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem;">
-                    <div style="color: var(--success); font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                        <span>📥 1. PEGA AQUÍ EL RESULTADO DEL AGENTE</span>
-                        <button class="primary-btn" onclick="previewFinalPitch()" style="padding: 4px 12px; font-size: 0.7rem; background: var(--success); color: black; width: auto; flex: none;">👁️ PREVISUALIZAR</button>
-                    </div>
-                    <textarea id="finalPitchInput" class="pitch-input" style="height: 120px; border-left-color: var(--success);" placeholder="Pega aquí el pitch que generó el Agente..."></textarea>
-                    
-                    <!-- Previsualización Dinámica -->
-                    <div id="finalPreviewContainer" style="display: none; margin-top: 1.5rem; animation: slideIn 0.3s ease-out;">
-                        <div style="color: var(--accent-primary); font-size: 0.8rem; font-weight: 800; margin-bottom: 0.5rem;">🚀 PITCH FINAL TRANSFORMADO</div>
-                        <div id="finalPreviewBox" style="background: rgba(0, 255, 170, 0.05); border: 1px solid rgba(0, 255, 170, 0.2); padding: 1.5rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; margin-bottom: 1.5rem; color: #fff;"></div>
+                <!-- Fase 2: Content (Nueva) -->
+                <div id="phase2Content" style="display: none;">
+                    <div class="advisor-panel" style="border-left-color: var(--success); background: rgba(0, 255, 170, 0.02); margin-bottom: 2rem;">
+                        <div style="color: var(--success); font-size: 0.9rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+                            <span>🎬</span> VIDEO DE RESPUESTA: PAZ OPERATIVA (20s)
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1rem;">
+                            Usa este guion con el video de 20 segundos para cerrar al prospecto que mostró interés inicial.
+                        </p>
                         
-                        <div class="actions" style="padding: 0;">
-                            <button class="primary-btn bot-btn" onclick="sendToBot()">
-                                <span>🤖 DESPLEGAR AL BOT COMANDANTE</span>
+                        <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(0, 255, 170, 0.2); margin-bottom: 1.5rem;">
+                            <div id="followUpScript" style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.6; color: #fff;">Hola [Nombre], me alegra tu interés. Sé que en [Restaurante] el tiempo vale oro. Grabé este video rápido de 20 segundos para mostrarte cómo RutaTotal 360 elimina el caos de los pedidos.
+
+Básicamente, matamos la lapicera y el papel para darte Paz Operativa:
+
+🚫 Cero Papel: Asignas pedidos con un toque.
+📍 Auditoría: Ves el estado y ubicación en vivo.
+🏍️ Control de Flota: Asignas repartidores al instante.
+📈 Cierres 1 clic: Reporte PDF automático.
+
+¿Qué prefieres? 
+A. Cuenta de prueba gratis.
+B. Llamada rápida de 7 min.</div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem;">
+                            <button class="primary-btn copy-btn" onclick="copyFollowUp()" style="background: var(--success); color: black;">
+                                <span>📋 COPIAR GUION DE SEGUIMIENTO</span>
                             </button>
+                            <button class="primary-btn bot-btn" onclick="sendFollowUpToBot()" style="background: var(--accent-bot);">
+                                <span>🤖 PASAR AL BOT DE SALIDA</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="mandamientos-panel" style="border-left-color: var(--accent-primary); background: rgba(0, 242, 255, 0.02);">
+                            <div style="color: var(--accent-primary); font-size: 0.8rem; font-weight: 800; margin-bottom: 0.5rem;">OPCIÓN A: PRUEBA GRATIS</div>
+                            <textarea id="scriptOptionA" class="pitch-input" style="height: 100px; font-size: 0.75rem;" readonly>¡Excelente elección! 🚀 Para configurar tu demo en 10 min necesito: 1. Email, 2. Nombre Local, 3. Cantidad de repartidores. ¡Te espero!</textarea>
+                            <button class="primary-btn" onclick="copyToClipboard('scriptOptionA')" style="padding: 8px; font-size: 0.7rem; background: rgba(0, 242, 255, 0.1); color: var(--accent-primary); border: 1px solid var(--accent-primary);">COPIAR RESPUESTA A</button>
+                        </div>
+                        <div class="mandamientos-panel" style="border-left-color: var(--accent-secondary); background: rgba(112, 0, 255, 0.02);">
+                            <div style="color: var(--accent-secondary); font-size: 0.8rem; font-weight: 800; margin-bottom: 0.5rem;">OPCIÓN B: LLAMADA 7 MIN</div>
+                            <textarea id="scriptOptionB" class="pitch-input" style="height: 100px; font-size: 0.75rem;" readonly>¡Perfecto! 🤝 Te paso mi agenda para que elijas el horario sin vueltas: [LINK_AGENDA]. Son solo 7 min. ¿Te parece bien?</textarea>
+                            <button class="primary-btn" onclick="copyToClipboard('scriptOptionB')" style="padding: 8px; font-size: 0.7rem; background: rgba(112, 0, 255, 0.1); color: var(--accent-secondary); border: 1px solid var(--accent-secondary);">COPIAR RESPUESTA B</button>
                         </div>
                     </div>
                 </div>
@@ -603,6 +667,57 @@ INSTRUCCIONES EXTRA:
                     window.open('outreach-bot.html', '_blank');
                 }
             }, 500);
+        }
+
+        function showPhase(phase) {
+            const p1 = document.getElementById('phase1Content');
+            const p2 = document.getElementById('phase2Content');
+            const t1 = document.getElementById('tab1');
+            const t2 = document.getElementById('tab2');
+
+            if (phase === 1) {
+                p1.style.display = 'block';
+                p2.style.display = 'none';
+                t1.style.color = 'var(--accent-agent)';
+                t1.style.borderBottom = '2px solid var(--accent-agent)';
+                t2.style.color = 'var(--text-dim)';
+                t2.style.borderBottom = 'none';
+            } else {
+                p1.style.display = 'none';
+                p2.style.display = 'block';
+                t2.style.color = 'var(--success)';
+                t2.style.borderBottom = '2px solid var(--success)';
+                t1.style.color = 'var(--text-dim)';
+                t1.style.borderBottom = 'none';
+            }
+        }
+
+        function copyFollowUp() {
+            const text = document.getElementById('followUpScript').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerText = '✅ GUION COPIADO';
+                setTimeout(() => btn.innerText = '📋 COPIAR GUION DE SEGUIMIENTO', 2000);
+            });
+        }
+
+        function copyToClipboard(id) {
+            const text = document.getElementById(id).value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Respuesta copiada al portapapeles.");
+            });
+        }
+
+        function sendFollowUpToBot() {
+            const pitchText = document.getElementById('followUpScript').innerText;
+            const botData = {
+                text: pitchText,
+                niche: 'seguimiento',
+                timestamp: new Date().getTime(),
+                isFollowUp: true
+            };
+            localStorage.setItem('rt360_active_pitch', JSON.stringify(botData));
+            alert("🚀 Guion de Seguimiento enviado al Bot Comandante.");
         }
 
         // Initialize listeners

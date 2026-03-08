@@ -263,15 +263,20 @@
             if (data) {
                 activePitch = JSON.parse(data);
                 const card = document.getElementById('pitchCard');
+                const isFollowUp = activePitch.isFollowUp || activePitch.niche === 'seguimiento';
+                
                 card.innerHTML = `
                     <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                        <span class="chip" style="background: rgba(0,242,255,0.1); color: var(--accent-primary); font-size: 0.6rem; padding: 2px 6px; border-radius: 4px;">NICHO: ${activePitch.niche.toUpperCase()}</span>
+                        <span class="chip" style="background: rgba(${isFollowUp ? '0,255,136' : '0,242,255'},0.1); color: ${isFollowUp ? 'var(--success)' : 'var(--accent-primary)'}; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px;">
+                            ${isFollowUp ? '🏁 SEGUIMIENTO' : 'NICHO: ' + activePitch.niche.toUpperCase()}
+                        </span>
                         <span style="font-size: 0.6rem; color: var(--text-dim);">${new Date(activePitch.timestamp).toLocaleTimeString()}</span>
                     </div>
                     <div class="pitch-preview">${activePitch.text}</div>
                 `;
-                logToConsole(`> Recibido nuevo Pitch para ${activePitch.niche}. Listo para despliegue.`);
+                logToConsole(`> Recibido ${isFollowUp ? 'Guion de Seguimiento' : 'nuevo Pitch para ' + activePitch.niche}. Listo para despliegue.`);
                 updateSendButtons();
+                if (isFollowUp) renderLeads(); // Re-render to show follow-up context
             }
         }
 
@@ -332,13 +337,15 @@
                 return;
             }
 
+            const isFollowUp = activePitch && (activePitch.isFollowUp || activePitch.niche === 'seguimiento');
+
             grid.innerHTML = leads.map(lead => `
-                <div class="lead-card" id="lead-${lead.id}">
-                    <span class="status-badge" id="status-${lead.id}">${lead.status}</span>
+                <div class="lead-card" id="lead-${lead.id}" style="${lead.status === 'enviado' && !isFollowUp ? 'opacity: 0.7;' : ''}">
+                    <span class="status-badge" id="status-${lead.id}" style="background: ${lead.status === 'enviado' ? 'rgba(0,255,136,0.1)' : 'rgba(255,255,255,0.05)'}; color: ${lead.status === 'enviado' ? 'var(--success)' : 'var(--text-dim)'}">${lead.status}</span>
                     <div class="lead-name">${lead.name}</div>
                     <div class="lead-info">📞 ${lead.phone} | 🏷️ ${lead.niche}</div>
-                    <button class="action-send" ${!activePitch ? 'disabled' : ''} onclick="personalizeAndSend(${lead.id})">
-                        <span>🚀 ENVIAR PITCH</span>
+                    <button class="action-send" ${!activePitch ? 'disabled' : ''} onclick="personalizeAndSend(${lead.id})" style="background: ${isFollowUp ? 'var(--success)' : 'var(--accent-bot)'}; color: ${isFollowUp ? 'black' : 'white'}">
+                        <span>${isFollowUp ? '🎯 SEGUIMIENTO' : '🚀 ENVIAR PITCH'}</span>
                     </button>
                 </div>
             `).join('');
