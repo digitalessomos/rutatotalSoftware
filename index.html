@@ -269,7 +269,7 @@
             border-radius: 10px;
         }
 
-        /* Estilos para el polvo */
+        /* Estilos para el polvo - cubre el header completo */
         #dust-canvas {
             position: absolute;
             top: 0;
@@ -277,7 +277,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 5;
+            z-index: 1;
         }
 
         .title-container {
@@ -805,13 +805,13 @@
 
     <!-- Encabezado Hero -->
     <header class="relative min-h-screen flex flex-col justify-center items-center px-6 pt-32 pb-16 overflow-hidden">
+        <!-- Canvas de partículas cubre todo el hero -->
+        <canvas id="dust-canvas"></canvas>
         <div class="absolute top-1/4 -left-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px]"></div>
 
         <div class="relative z-10 grid lg:grid-cols-10 gap-6 items-center max-w-[1300px] mx-auto w-full">
             <div class="lg:col-span-3 text-left reveal">
                 <div class="title-container">
-                    <!-- Canvas para el efecto de tierra/polvo -->
-                    <canvas id="dust-canvas"></canvas>
                     <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-[1.1] tracking-tight relative z-10">
                         ¿EL CAOS DE LAS 10 PM <br> TE ESTÁ <span
                             class="text-red-500/90 underline decoration-red-900/50 decoration-4 underline-offset-4">ROBANDO
@@ -1204,16 +1204,16 @@
         let heroSlides = [];
         let heroSliderContainer = null;
 
-        // Lógica del efecto de polvo (Tierra)
+        // Lógica del efecto de polvo/partículas - cubre el Hero completo
         const canvas = document.getElementById('dust-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+        const heroHeader = document.querySelector('header');
 
         function resizeCanvas() {
-            const container = canvas.parentElement;
-            if (!container) return;
-            canvas.width = container.offsetWidth;
-            canvas.height = container.offsetHeight;
+            if (!heroHeader) return;
+            canvas.width = heroHeader.offsetWidth;
+            canvas.height = heroHeader.offsetHeight;
         }
 
         class DustParticle {
@@ -1223,16 +1223,16 @@
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 5 + 2;
-                this.speedY = (Math.random() - 0.5) * 1;
-                this.opacity = Math.random() * 0.5;
-                this.color = `rgba(${139 + Math.random() * 50}, ${115 + Math.random() * 30}, ${85}, ${this.opacity})`;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedX = Math.random() * 4 + 1.5;
+                this.speedY = (Math.random() - 0.5) * 0.8;
+                this.opacity = Math.random() * 0.25; /* más sutil al cubrir más área */
+                this.color = `rgba(${139 + Math.random() * 60}, ${115 + Math.random() * 40}, ${85 + Math.random() * 20}, ${this.opacity})`;
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                if (this.x > canvas.width) {
+                if (this.x > canvas.width + 10) {
                     this.x = -10;
                     this.y = Math.random() * canvas.height;
                 }
@@ -1247,7 +1247,7 @@
 
         function initDust() {
             particles = [];
-            for (let i = 0; i < 60; i++) {
+            for (let i = 0; i < 120; i++) { /* más partículas para el área mayor */
                 particles.push(new DustParticle());
             }
         }
@@ -1261,7 +1261,10 @@
             requestAnimationFrame(animateDust);
         }
 
-        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initDust(); /* reinicializar partículas al cambiar tamaño */
+        });
 
         function initHeroSlider() {
             heroSliderContainer = document.querySelector('header .hero-slider-container');
