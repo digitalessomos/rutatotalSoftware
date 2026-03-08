@@ -75,10 +75,10 @@ export const PLANES_CONFIG = [
         titulo: "Torre de Control 360",
         subtitulo: "Estado de Poder Absoluto",
         descripcion: "Para locales de alto volumen que buscan automatización completa e inteligencia artificial.",
-        precioInstalacion: "VIP",
-        precioMensual: "Custom",
+        precioInstalacion: 900,
+        precioMensual: 180,
         popular: false,
-        cta: "Solicitar Auditoría",
+        cta: "Solicitar Auditoría VIP",
         caracteristicas: [
             "Todo lo incluido en Fase 02",
             "Delivery App Premium (Logística de Última Milla)",
@@ -88,6 +88,13 @@ export const PLANES_CONFIG = [
             "Alertas Hápticas Torre de Control",
             "Soporte prioritario 24/7",
             "Backup Local redundante"
-        ]
+        ],
+        promo: {
+            activa: true,
+            texto: "Acceso Elite",
+            descuentoPorcentaje: 30,
+            cuposTotales: 2,
+            cuposDisponibles: 1
+        }
     }
 ];
