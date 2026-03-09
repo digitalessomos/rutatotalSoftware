@@ -183,12 +183,13 @@
             display: flex;
             gap: 20px;
             align-items: stretch;
-            /* Esto iguala las alturas de los hijos */
+            height: 100%;
         }
 
         .transformation-avatar-box {
             flex: 0 0 280px;
-            height: 500px;
+            height: 100%;
+            min-height: 480px;
         }
 
         .transformation-display-box {
@@ -201,7 +202,7 @@
             flex-direction: column;
             justify-content: center;
             position: relative;
-
+            height: 100%;
         }
 
         .package-video {
@@ -676,15 +677,20 @@
 
         .slider-label {
             position: absolute;
-            top: 20px;
-            padding: 4px 12px;
-            background: rgba(0, 0, 0, 0.6);
+            top: 14px;
+            padding: 5px 14px;
+            background: rgba(0, 0, 0, 0.72);
             color: white;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 10px;
+            font-weight: 800;
             pointer-events: none;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
+            max-width: 160px;
+            text-align: center;
+            line-height: 1.3;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
         }
 
         .label-before {
@@ -1041,10 +1047,10 @@
                             <video id="modal-video-after" class="after-image opacity-70" autoplay loop muted
                                 playsinline></video>
                         </div>
-                        <span class="slider-label label-after">DESPUÉS</span>
+                        <span class="slider-label label-after" id="label-after-text">DESPUÉS</span>
                     </div>
 
-                    <span class="slider-label label-before">ANTES</span>
+                    <span class="slider-label label-before" id="label-before-text">ANTES</span>
 
                     <!-- Handle -->
                     <div class="slider-handle" id="slider-handle">
@@ -1069,8 +1075,7 @@
                 </div>
                 <h2 class="text-4xl md:text-6xl font-black mb-4 italic tracking-tighter">TRANSFORMACIÓN DIGITAL</h2>
                 <p class="text-slate-400 text-xl">Esta tecnología le da al personal del mostrador una consola
-                    centralizada para gestionar el ciclo de vida de cada pedido: Cocina, Mostrador, En Viaje y
-                    Entregado.</p>
+                    centralizada para gestionar el ciclo de vida de cada pedido: Local, Delivery y Entregado.</p>
 
                 <!--p class="text-slate-400 text-xl">Tecnología que sincroniza tu logística con la realidad de tu negocio.</p-->
             </div>
@@ -1126,7 +1131,7 @@
                 </div>
 
                 <!-- Columna de Videos Alineada -->
-                <div class="lg:col-span-8">
+                <div class="lg:col-span-8 flex flex-col">
                     <div class="transformation-video-wrapper">
                         <!-- Video Avatar -->
                         <div class="video-container transformation-avatar-box border-emerald-500/20 bg-slate-900 group">
@@ -1193,7 +1198,7 @@
                     Contactar Ahora
                 </button>
             </div>
-            <p class="mt-12 text-slate-500 text-xs font-bold tracking-[0.4em] uppercase">Control Total | RutaTotal 360
+            <p class="mt-12 text-slate-500 text-xs font-bold tracking-[0.4em] uppercase">Control Brutal | RutaTotal 360
                 &copy; 2026</p>
         </div>
     </footer>
@@ -1367,70 +1372,90 @@
                 title: "Estado del Pedido",
                 iconHTML: `<div class="relative flex items-center justify-center"><i class="far fa-comment-dots text-lg"></i><i class="fas fa-check absolute -bottom-1 -right-1 text-[10px] text-emerald-400 bg-slate-900 rounded-full border border-slate-900"></i></div>`,
                 imgBefore: "img/antes/1.webp",
-                videoAfter: "videos/diez/v1.mp4"
+                videoAfter: "videos/diez/v1.mp4",
+                labelBefore: "Antes: Te has llevado este pedido?",
+                labelAfter: "Después: Un vistazo, la respuesta"
             },
             {
                 id: 2,
                 title: "Fin de la Lapicera",
                 iconHTML: `<i class="fas fa-hand-pointer text-lg"></i>`,
                 imgBefore: "img/antes/2.webp",
-                videoAfter: "videos/diez/v2.mp4"
+                videoAfter: "videos/diez/v2.mp4",
+                labelBefore: "Antes: Se anotaba para asignar pedidos",
+                labelAfter: "Después: Un arrastre, una asignación, un segundo"
             },
             {
                 id: 3,
                 title: "Cero Papel",
                 iconHTML: `<div class="relative"><i class="fas fa-ticket-alt text-lg transform -rotate-12"></i><i class="fas fa-wind absolute -right-3 top-1 text-[10px] opacity-70"></i></div>`,
                 imgBefore: "img/antes/3.webp",
-                videoAfter: "videos/diez/v3.mp4"
+                videoAfter: "videos/diez/v3.mp4",
+                labelBefore: "Antes: Tickets de papel y órdenes perdidas",
+                labelAfter: "Después: Todo digital, cero papel, cero pérdidas"
             },
             {
                 id: 4,
                 title: "Adiós al conteo manual",
                 iconHTML: `<div class="relative"><i class="fas fa-calculator text-lg text-slate-400"></i><div class="absolute inset-0 flex items-center justify-center"><div class="w-full h-0.5 bg-red-500 transform rotate-45"></div></div></div>`,
                 imgBefore: "img/antes/4.webp",
-                videoAfter: "videos/diez/v4.mp4"
+                videoAfter: "videos/diez/v4.mp4",
+                labelBefore: "Antes: Conteo manual con errores",
+                labelAfter: "Después: El sistema cuenta solo, siempre exacto"
             },
             {
                 id: 5,
                 title: "Pedidos Bajo Control Total",
                 iconHTML: `<div class="relative flex items-center justify-center"><i class="fas fa-shield-alt text-lg"></i><span class="absolute text-[9px] font-black text-slate-900 pt-0.5">$</span></div>`,
                 imgBefore: "img/antes/5.webp",
-                videoAfter: "videos/diez/v5.mp4"
+                videoAfter: "videos/diez/v5.mp4",
+                labelBefore: "Antes: Pedidos perdidos, plata perdida",
+                labelAfter: "Después: Cada pedido auditado en tiempo real"
             },
             {
                 id: 6,
                 title: "Dominio Absoluto de Flota",
                 iconHTML: `<i class="fas fa-history text-lg"></i>`,
                 imgBefore: "img/antes/6.webp",
-                videoAfter: "videos/diez/v6.mp4"
+                videoAfter: "videos/diez/v6.mp4",
+                labelBefore: "Antes: ¿Quién tomó ese pedido?",
+                labelAfter: "Después: Repartidor asignado, visible al instante"
             },
             {
                 id: 7,
                 title: "Cero Duplicados, Control Total",
                 iconHTML: `<div class="flex -space-x-2"><i class="fas fa-ban text-red-500"></i><i class="fas fa-ban text-red-500 opacity-70"></i></div>`,
                 imgBefore: "img/antes/7.webp",
-                videoAfter: "videos/diez/v7.mp4"
+                videoAfter: "videos/diez/v7.mp4",
+                labelBefore: "Antes: Pedidos duplicados sin querer",
+                labelAfter: "Después: Un ID único, sin confusiones"
             },
             {
                 id: 8,
                 title: "Información precisa para clientes",
                 iconHTML: `<div class="relative"><i class="fas fa-headset text-lg"></i><i class="fas fa-wifi absolute -top-2 -right-2 text-[8px] text-emerald-500"></i></div>`,
                 imgBefore: "img/antes/8.webp",
-                videoAfter: "videos/diez/v8.mp4"
+                videoAfter: "videos/diez/v8.mp4",
+                labelBefore: "Antes: 'No sé, ya pregunto...'",
+                labelAfter: "Después: Estado exacto en 2 segundos"
             },
             {
                 id: 9,
                 title: "Pedidos ubicados al instante",
                 iconHTML: `<i class="fas fa-crosshairs text-lg"></i>`,
                 imgBefore: "img/antes/9.webp",
-                videoAfter: "videos/diez/v9.mp4"
+                videoAfter: "videos/diez/v9.mp4",
+                labelBefore: "Antes: Nadie sabía dónde estaba el pedido",
+                labelAfter: "Después: Localizado en la consola al instante"
             },
             {
                 id: 10,
                 title: "Verdad Operativa",
                 iconHTML: `<i class="fas fa-broadcast-tower text-lg animate-pulse"></i>`,
                 imgBefore: "img/antes/10.webp",
-                videoAfter: "videos/diez/v10.mp4"
+                videoAfter: "videos/diez/v10.mp4",
+                labelBefore: "Antes: Confianza ciega en lo que había",
+                labelAfter: "Después: La pantalla no miente, nunca"
             }
         ];
 
@@ -1571,8 +1596,8 @@
 
             document.getElementById('modal-id').innerText = data.id.toString().padStart(2, '0');
             document.getElementById('modal-title').innerText = data.title;
-            // document.getElementById('modal-text-before').innerText = data.before; <-- REMOVED
-            // document.getElementById('modal-text-after').innerText = data.after; <-- REMOVED
+            document.getElementById('label-before-text').innerText = data.labelBefore || 'ANTES';
+            document.getElementById('label-after-text').innerText = data.labelAfter || 'DESPUÉS';
 
             const imgBefore = document.getElementById('modal-img-before');
             const videoAfter = document.getElementById('modal-video-after');

@@ -48,7 +48,7 @@ export const PLANES_CONFIG = [
         fase: "Fase 02",
         titulo: "Multi-Pantalla",
         subtitulo: "Vigila tu operación, desde donde estés",
-        descripcion: "Transforma tu negocio en una Torre de Control con seguimiento en tiempo real y soluciona la ceguera cuando no está en el local.",
+        descripcion: "Transforma tu negocio en una Torre de Control con seguimiento en tiempo real.",
         precioInstalacion: 350,
         precioMensual: 60,
         popular: true,
@@ -59,7 +59,7 @@ export const PLANES_CONFIG = [
             "Infraestructura Google (Acceso Remoto Seguro)",
             "Control de Efectivo Blindado (Anti-Robo)",
             "Optimización de Medios (Firebase Storage)",
-            "Reportes de Estado Automáticos"
+            "Acceso a Reportes Historicos"
         ],
         promo: {
             activa: true,
@@ -72,7 +72,7 @@ export const PLANES_CONFIG = [
     {
         id: "fase-3",
         fase: "Fase 03",
-        titulo: "Despacho Ultrasónico: Órbita",
+        titulo: "Despacho Ultrasónico",
         subtitulo: "Garantía de Entrega Sin Fricción",
         descripcion: "Resuelve cada contratiempo en menos de 3 segundos. Aquí muere WhatsApp.",
         precioInstalacion: 900,
