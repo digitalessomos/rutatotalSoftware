@@ -281,6 +281,17 @@
             z-index: 1;
         }
 
+        /* Estilos para el polvo - cubre el footer completo */
+        #footer-dust-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .title-container {
             position: relative;
             display: inline-block;
@@ -1187,6 +1198,8 @@
 
     <!-- Footer -->
     <footer id="contacto" class="py-32 relative overflow-hidden bg-slate-950 border-t border-white/5">
+        <!-- Canvas de partículas del footer -->
+        <canvas id="footer-dust-canvas"></canvas>
         <div class="container mx-auto px-6 relative z-10 text-center">
             <h2
                 class="text-4xl md:text-7xl font-black mb-12 max-w-5xl mx-auto leading-[0.9] italic tracking-tighter uppercase">
@@ -1214,6 +1227,12 @@
         const ctx = canvas.getContext('2d');
         let particles = [];
         const heroHeader = document.querySelector('header');
+
+        // Partículas del Footer
+        const footerCanvas = document.getElementById('footer-dust-canvas');
+        const footerCtx = footerCanvas.getContext('2d');
+        let footerParticles = [];
+        const footerEl = document.querySelector('footer');
 
         function resizeCanvas() {
             if (!heroHeader) return;
@@ -1269,7 +1288,62 @@
         window.addEventListener('resize', () => {
             resizeCanvas();
             initDust(); /* reinicializar partículas al cambiar tamaño */
+            resizeFooterCanvas();
+            initFooterDust();
         });
+
+        // --- FOOTER PARTICLES ---
+        function resizeFooterCanvas() {
+            if (!footerEl) return;
+            footerCanvas.width = footerEl.offsetWidth;
+            footerCanvas.height = footerEl.offsetHeight;
+        }
+
+        function initFooterDust() {
+            footerParticles = [];
+            for (let i = 0; i < 90; i++) {
+                footerParticles.push(new FooterParticle());
+            }
+        }
+
+        class FooterParticle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * footerCanvas.width;
+                this.y = Math.random() * footerCanvas.height;
+                this.size = Math.random() * 2 + 0.4;
+                this.speedX = (Math.random() - 0.5) * 1.2;
+                this.speedY = -(Math.random() * 1.5 + 0.5); /* sube suavemente */
+                this.opacity = Math.random() * 0.2;
+                /* tonos emerald/verde para diferenciarse del hero */
+                const r = 10 + Math.floor(Math.random() * 30);
+                const g = 150 + Math.floor(Math.random() * 60);
+                const b = 90 + Math.floor(Math.random() * 40);
+                this.color = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y < -10) {
+                    this.y = footerCanvas.height + 10;
+                    this.x = Math.random() * footerCanvas.width;
+                }
+                if (this.x < -10) this.x = footerCanvas.width + 10;
+                if (this.x > footerCanvas.width + 10) this.x = -10;
+            }
+            draw() {
+                footerCtx.fillStyle = this.color;
+                footerCtx.beginPath();
+                footerCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                footerCtx.fill();
+            }
+        }
+
+        function animateFooterDust() {
+            footerCtx.clearRect(0, 0, footerCanvas.width, footerCanvas.height);
+            footerParticles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateFooterDust);
+        }
 
         function initHeroSlider() {
             heroSliderContainer = document.querySelector('header .hero-slider-container');
@@ -1282,6 +1356,11 @@
             resizeCanvas();
             initDust();
             animateDust();
+
+            // Init footer particles
+            resizeFooterCanvas();
+            initFooterDust();
+            animateFooterDust();
         }
 
         function startSlider() {
@@ -1380,7 +1459,7 @@
                 id: 2,
                 title: "Fin de la Lapicera",
                 iconHTML: `<i class="fas fa-hand-pointer text-lg"></i>`,
-                imgBefore: "img/antes/2.webp",
+                imgBefore: "img/antes/2.png",
                 videoAfter: "videos/diez/v2.mp4",
                 labelBefore: "Antes: Se anotaba para asignar pedidos",
                 labelAfter: "Después: Un arrastre, una asignación, un segundo"
@@ -1391,7 +1470,7 @@
                 iconHTML: `<div class="relative"><i class="fas fa-ticket-alt text-lg transform -rotate-12"></i><i class="fas fa-wind absolute -right-3 top-1 text-[10px] opacity-70"></i></div>`,
                 imgBefore: "img/antes/3.webp",
                 videoAfter: "videos/diez/v3.mp4",
-                labelBefore: "Antes: Tickets de papel y órdenes perdidas",
+                labelBefore: "Antes: Tickets de papel de regreso",
                 labelAfter: "Después: Todo digital, cero papel, cero pérdidas"
             },
             {
@@ -1400,8 +1479,8 @@
                 iconHTML: `<div class="relative"><i class="fas fa-calculator text-lg text-slate-400"></i><div class="absolute inset-0 flex items-center justify-center"><div class="w-full h-0.5 bg-red-500 transform rotate-45"></div></div></div>`,
                 imgBefore: "img/antes/4.webp",
                 videoAfter: "videos/diez/v4.mp4",
-                labelBefore: "Antes: Conteo manual con errores",
-                labelAfter: "Después: El sistema cuenta solo, siempre exacto"
+                labelBefore: "Antes: Conteo manual",
+                labelAfter: "Después: Conteo automático, 0 segundos"
             },
             {
                 id: 5,
@@ -1409,17 +1488,17 @@
                 iconHTML: `<div class="relative flex items-center justify-center"><i class="fas fa-shield-alt text-lg"></i><span class="absolute text-[9px] font-black text-slate-900 pt-0.5">$</span></div>`,
                 imgBefore: "img/antes/5.webp",
                 videoAfter: "videos/diez/v5.mp4",
-                labelBefore: "Antes: Pedidos perdidos, plata perdida",
-                labelAfter: "Después: Cada pedido auditado en tiempo real"
+                labelBefore: "Antes: Pedidos perdidos, revisión manual ticket por ticket",
+                labelAfter: "Después: Ningún pedido se pierde"
             },
             {
                 id: 6,
                 title: "Dominio Absoluto de Flota",
                 iconHTML: `<i class="fas fa-history text-lg"></i>`,
-                imgBefore: "img/antes/6.webp",
+                imgBefore: "img/antes/6.jpg",
                 videoAfter: "videos/diez/v6.mp4",
-                labelBefore: "Antes: ¿Quién tomó ese pedido?",
-                labelAfter: "Después: Repartidor asignado, visible al instante"
+                labelBefore: "Antes: Te has llevado este pedido?",
+                labelAfter: "Después: Auditoria automática"
             },
             {
                 id: 7,

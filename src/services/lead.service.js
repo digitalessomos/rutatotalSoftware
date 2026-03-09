@@ -50,6 +50,31 @@ export const leadService = {
     },
 
     /**
+     * Suscribirse a las sesiones de chat en tiempo real
+     * @param {Function} callback - Función que recibe la lista de sesiones
+     */
+    subscribeToChats(callback) {
+        const chatsRef = collection(db, 'chat_sessions');
+        const q = query(chatsRef, orderBy('startedAt', 'desc'));
+
+        return onSnapshot(q, (snapshot) => {
+            const sessions = snapshot.docs.map(d => ({
+                id: d.id,
+                ...d.data()
+            }));
+            callback(sessions);
+        }, (error) => {
+            // Fallback: si el campo startedAt no existe, cargar sin orden
+            console.warn("Ordenando sin 'startedAt', usando snapshot sin orden:", error.message);
+            const fallbackRef = collection(db, 'chat_sessions');
+            onSnapshot(fallbackRef, (snap) => {
+                const sessions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                callback(sessions);
+            });
+        });
+    },
+
+    /**
      * Guardar una sesión de chat como lead
      */
     async saveChatLead(leadData, history) {
