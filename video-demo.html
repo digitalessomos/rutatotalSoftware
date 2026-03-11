@@ -107,7 +107,7 @@
     <div class="glowing-blob top-1/4 left-1/4"></div>
     <div class="glowing-blob bottom-1/4 right-1/4" style="background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, rgba(0,0,0,0) 70%); animation-delay: -3s;"></div>
 
-    <main class="w-full max-w-[462px] mx-auto z-10 relative">
+    <main class="w-full max-w-[562px] mx-auto z-10 relative">
         
         <!-- Tarjeta Central Glassmorphism -->
         <div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col gap-6 text-center">
@@ -122,14 +122,15 @@
 
             <!-- Contenedor del Video -->
             <!-- format: aspect-video para horizontal (16:9) -->
-            <div class="relative rounded-2xl overflow-hidden shadow-2xl bg-black aspect-[16/11] border border-white/10 ring-4 ring-white/5">
+            <div id="video-container" class="relative rounded-2xl overflow-hidden shadow-2xl bg-black aspect-[16/11] border border-white/10 ring-4 ring-white/5 group">
                 
                 <!-- REEMPLAZA ESTE SRC POR LA URL DE TU VIDEO EN FIREBASE/HOSTING -->
                 <video 
+                    id="demo-video"
                     src="videos/postprimermensaje.mov" 
                     poster="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop"
                     autoplay 
-                    muted 
+                    
                     loop 
                     playsinline 
                     class="w-full h-full object-cover"
@@ -138,8 +139,19 @@
                 <!-- Etiqueta decorativa sobre el video -->
                 <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold text-white/90 border border-white/10 flex items-center gap-1.5 shadow-lg">
                     <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                    
                 </div>
+
+                <!-- Botón de Fullscreen -->
+                <button id="fullscreen-btn" class="absolute bottom-3 right-3 bg-black/40 hover:bg-black/80 backdrop-blur-sm p-2 rounded-lg text-white/90 transition-all duration-300 opacity-100 sm:opacity-0 group-hover:opacity-100 z-20" aria-label="Pantalla completa">
+                    <!-- Icono Expandir -->
+                    <svg id="fullscreen-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                    </svg>
+                    <!-- Icono Achicar -->
+                    <svg id="shrink-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+                    </svg>
+                </button>
             </div>
 
             <!-- Texto intermedio CTA -->
@@ -166,5 +178,53 @@
         </div>
     </main>
 
+    <!-- Script para Fullscreen -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoContainer = document.getElementById('video-container');
+            const video = document.getElementById('demo-video');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const expandIcon = document.getElementById('fullscreen-icon');
+            const shrinkIcon = document.getElementById('shrink-icon');
+
+            fullscreenBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                    if (videoContainer.requestFullscreen) {
+                        videoContainer.requestFullscreen();
+                    } else if (videoContainer.webkitRequestFullscreen) {
+                        videoContainer.webkitRequestFullscreen();
+                    } else if (videoContainer.msRequestFullscreen) {
+                        videoContainer.msRequestFullscreen();
+                    } else if (video.webkitEnterFullscreen) {
+                        video.webkitEnterFullscreen();
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                }
+            });
+
+            const handleFullscreenChange = () => {
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+                    expandIcon.classList.add('hidden');
+                    shrinkIcon.classList.remove('hidden');
+                    videoContainer.classList.remove('rounded-2xl', 'aspect-[16/11]', 'ring-4', 'ring-white/5');
+                } else {
+                    expandIcon.classList.remove('hidden');
+                    shrinkIcon.classList.add('hidden');
+                    videoContainer.classList.add('rounded-2xl', 'aspect-[16/11]', 'ring-4', 'ring-white/5');
+                }
+            };
+
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('msfullscreenchange', handleFullscreenChange);
+        });
+    </script>
 </body>
 </html>
