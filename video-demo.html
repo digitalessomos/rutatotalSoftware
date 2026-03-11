@@ -7,7 +7,7 @@
     <!-- METADATOS PARA WHATSAPP / OPEN GRAPH -->
     <meta property="og:title" content="RutaTotal 360 | Paz Operativa">
     <meta property="og:description" content="Mira en 20 segundos cómo eliminamos el caos de los pedidos. Tu operación en control.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:image" content="img/pic1.jpg">
     <meta property="og:url" content="https://digitalessomos.vercel.app/video-demo.html">
     <meta property="og:type" content="website">
 
@@ -210,10 +210,14 @@
                     expandIcon.classList.add('hidden');
                     shrinkIcon.classList.remove('hidden');
                     videoContainer.classList.remove('rounded-2xl', 'aspect-[16/11]', 'ring-4', 'ring-white/5');
+                    video.classList.remove('object-cover');
+                    video.classList.add('object-contain');
                 } else {
                     expandIcon.classList.remove('hidden');
                     shrinkIcon.classList.add('hidden');
                     videoContainer.classList.add('rounded-2xl', 'aspect-[16/11]', 'ring-4', 'ring-white/5');
+                    video.classList.remove('object-contain');
+                    video.classList.add('object-cover');
                 }
             };
 
