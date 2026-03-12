@@ -771,6 +771,99 @@
                 display: none;
             }
         }
+        /* Estilos Footer Dual */
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .footer-form-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .footer-form-input:focus {
+            border-color: var(--brand-emerald);
+            background: rgba(16, 185, 129, 0.05);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+        }
+
+        .input-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            margin-left: 4px;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                max-width: 500px;
+            }
+        }
+
+        /* Estilos Modal Plan Detallado */
+        .plan-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(16px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+
+        .plan-modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .plan-modal-card {
+            max-width: 500px;
+            width: 95%;
+            margin: auto;
+            position: relative;
+        }
+
+        .modal-feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+        }
+
+        .modal-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .modal-feature-item i {
+            color: var(--brand-emerald);
+            font-size: 10px;
+        }
     </style>
 </head>
 
@@ -800,10 +893,10 @@
                 </div>
             </div>
 
-            <!-- Acciones Rápidas 
+            <!-- Acciones Rápidas -->
         <div class="flex items-center gap-6">
             
-            <div-- class="hidden md:flex gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-300">
+            <!--div class="hidden md:flex gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-300">
                 <a href="#fortalezas" class="hover:text-emerald-500 transition-colors">Fortalezas</a>
                 <a href="#fases" class="hover:text-emerald-500 transition-colors">Fases 01 & 02</a>
             </div-->
@@ -811,7 +904,7 @@
             <!-- Botón de Acción Principal (Call to Action) -->
             <a href="#contacto"
                 class="group relative text-xs font-black bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-3 rounded-lg transition-all uppercase tracking-tighter overflow-hidden">
-                <span class="relative z-10">Solicitar Demo Gratis</span>
+                <span class="relative z-10">Agendar Demo</span>
                 <div
                     class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                 </div>
@@ -848,7 +941,7 @@
 
                     <a href="#contacto"
                         class="group relative inline-flex items-center gap-3 bg-white text-slate-950 px-8 py-4 rounded-xl font-black transition-all hover:scale-105 overflow-hidden">
-                        <span class="relative z-10 uppercase tracking-tight">DESACTIVAR EL CAOS (Demo)</span>
+                        <span class="relative z-10 uppercase tracking-tight">SOLICITAR MI DEMO</span>
                         <div
                             class="absolute inset-0 bg-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
@@ -1111,9 +1204,12 @@
                             Vinculá cada ID al instante, eliminá el uso de la lapicera y sabé la verdad de cada pedido
                             sin preguntar nada.
                         </p>
-                        <div class="pt-4 border-t border-white/5">
+                        <div class="pt-4 border-t border-white/5 flex justify-between items-center">
                             <span class="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">Enfoque:
                                 Claridad Informativa</span>
+                            <button onclick="event.stopPropagation(); openPlanModal(1)" class="text-[9px] font-black uppercase tracking-widest bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-slate-950 px-3 py-1.5 rounded transition-all border border-emerald-500/20">
+                                Ver Detalles y Precio
+                            </button>
                         </div>
                     </div>
 
@@ -1134,9 +1230,12 @@
                             casa.
                             Cero latencia, cero excusas. Si está en la pantalla, es la verdad.
                         </p>
-                        <div class="pt-4 border-t border-white/5">
+                        <div class="pt-4 border-t border-white/5 flex justify-between items-center">
                             <span class="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">Enfoque:
                                 Control Remoto Total</span>
+                            <button onclick="event.stopPropagation(); openPlanModal(2)" class="text-[9px] font-black uppercase tracking-widest bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-slate-950 px-3 py-1.5 rounded transition-all border border-emerald-500/20">
+                                Ver Detalles y Precio
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1196,25 +1295,71 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer id="contacto" class="py-32 relative overflow-hidden bg-slate-950 border-t border-white/5">
-        <!-- Canvas de partículas del footer -->
         <canvas id="footer-dust-canvas"></canvas>
         <div class="container mx-auto px-6 relative z-10 text-center">
-            <h2
-                class="text-4xl md:text-7xl font-black mb-12 max-w-5xl mx-auto leading-[0.9] italic tracking-tighter uppercase">
-                ¿Listo para tomar el control de tus pedidos?</h2>
+            <h2 class="text-4xl md:text-6xl font-black mb-16 max-w-5xl mx-auto leading-[0.9] italic tracking-tighter uppercase">
+                ¿Listo para tomar el <span class="text-emerald-500">Control Brutal</span>?
+            </h2>
 
-            <div class="max-w-md mx-auto">
-                <button onclick="handleContact()"
-                    class="w-full bg-emerald-500 text-slate-950 hover:bg-white font-black py-6 rounded-2xl text-xl transition-all shadow-2xl shadow-emerald-500/20 uppercase tracking-tighter">
-                    Contactar Ahora
-                </button>
+            <div class="footer-grid">
+                <!-- Canal 01: Acción Inmediata -->
+                <div class="reveal glass-card p-10 rounded-[2.5rem] border-emerald-500/20 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fab fa-whatsapp text-6xl text-emerald-500"></i>
+                    </div>
+                    <span class="text-emerald-500 font-bold tracking-widest uppercase text-[10px] mb-2 block">Vía Rápida</span>
+                    <h3 class="text-3xl font-black italic mb-4 uppercase leading-none">Hablar con un <br>Estratega</h3>
+                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">¿El caos te está ganando hoy? Saltá la fila. Hablá con nosotros ahora y desactivamos el desorden en minutos.</p>
+                    
+                    <button onclick="handleWhatsAppContact()" class="w-full bg-emerald-500 text-slate-950 hover:bg-white font-black py-5 rounded-xl text-lg transition-all uppercase tracking-tighter flex items-center justify-center gap-3">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        Iniciar WhatsApp
+                    </button>
+                </div>
+
+                <!-- Canal 02: Planificación -->
+                <div class="reveal glass-card p-10 rounded-[2.5rem] bg-slate-900/40 border-white/5">
+                    <span class="text-slate-500 font-bold tracking-widest uppercase text-[10px] mb-2 block">Crecimiento Digital</span>
+                    <h3 class="text-3xl font-black italic mb-6 uppercase leading-none">Solicitar <br>Propuesta</h3>
+                    
+                    <form id="lead-form" class="space-y-4" onsubmit="handleLeadForm(event)">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="input-label">Nombre</label>
+                                <input type="text" id="lead-name" placeholder="Tu nombre" class="footer-form-input" required>
+                            </div>
+                            <div>
+                                <label class="input-label">WhatsApp</label>
+                                <input type="tel" id="lead-phone" placeholder="Ej: +54 9..." class="footer-form-input" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="input-label">Sector</label>
+                            <select id="lead-sector" class="footer-form-input appearance-none text-slate-400">
+                                <option value="gastronomia">Gastronomía / Restaurantes</option>
+                                <option value="logistica">Servicios Locales / Logística</option>
+                                <option value="ecommerce">E-commerce de Nicho</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold py-4 rounded-xl text-xs transition-all uppercase tracking-[0.2em] mt-2">
+                            Enviar a n8n Automático
+                        </button>
+                    </form>
+                </div>
             </div>
-            <p class="mt-12 text-slate-500 text-xs font-bold tracking-[0.4em] uppercase">Control Brutal | RutaTotal 360
-                &copy; 2026</p>
+
+            <p class="mt-20 text-slate-600 text-[10px] font-bold tracking-[0.4em] uppercase">Control Brutal | RutaTotal 360 &copy; 2026</p>
         </div>
     </footer>
+
+    <!-- Modal Detalle de Plan -->
+    <div id="plan-detail-modal" class="plan-modal-overlay">
+        <div class="plan-modal-card" id="plan-modal-body">
+            <!-- El contenido se inyecta dinámicamente -->
+        </div>
+    </div>
 
     <script>
         let currentHeroSlide = 0;
@@ -1758,10 +1903,143 @@
             }
         };
 
-        function handleContact() {
-            const msg = encodeURIComponent("Hola. Estoy interesado en conocer más sobre las fortalezas de RutaTotal 360 y cómo implementar el monitor de pedidos en mi local.");
-            window.open(`https://rutatotal360.vercel.app/paquetes/planes.html`, '_blank');
+        function handleWhatsAppContact() {
+            const msg = encodeURIComponent("Hola. Acabo de ver la web de RutaTotal 360 y quiero hablar con un estratega para desactivar el caos en mi negocio. Me interesa una solución de control operativo.");
+            window.open(`https://wa.me/5491159665917?text=${msg}`, '_blank');
         }
+
+        function handleLeadForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('lead-name').value;
+            const phone = document.getElementById('lead-phone').value;
+            const sector = document.getElementById('lead-sector').value;
+            
+            // Simulación de envío a n8n
+            console.log("Enviando lead a n8n:", { name, phone, sector });
+            
+            // Efecto visual de envío
+            const btn = event.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "PROCESANDO CON n8n...";
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert(`¡Gracias ${name}! Tu solicitud ha sido registrada. Un estratega de RutaTotal te contactará pronto.`);
+                btn.innerText = "ENVIADO CON ÉXITO";
+                event.target.reset();
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 3000);
+            }, 1500);
+        }
+        // --- MODALES DE PLANES ---
+        const planesData = {
+            1: {
+                fase: "Fase 01",
+                titulo: "Mostrador Digital",
+                subtitulo: "Elimina el caos de las comandas",
+                descripcion: "Recupera el silencio en el mostrador eliminando el papel, la lapicera y los gritos en la cocina.",
+                precioInstalacion: 150,
+                precioMensual: 25,
+                caracteristicas: [
+                    "Dashboard Proactivo (Glance-First)",
+                    "Gestión de 4 Estados Operativos",
+                    "Interacción Táctil Drag-and-Drop",
+                    "Logística Visual por Colores",
+                    "Feedback Auditivo (Motor Tone.js)",
+                    "Buscador Mega-Rápido de IDs",
+                    "Centro de Reportes Avanzado"
+                ],
+                waMsg: "Hola. Me interesa la Fase 01 (Mostrador Digital) para optimizar el despacho de mi local. ¿Me podrías dar más información?"
+            },
+            2: {
+                fase: "Fase 02",
+                titulo: "Multi-Pantalla",
+                subtitulo: "Vigila tu operación, desde donde estés",
+                descripcion: "Transforma tu negocio en una Torre de Control con seguimiento en tiempo real desde cualquier dispositivo.",
+                precioInstalacion: 350,
+                precioMensual: 60,
+                caracteristicas: [
+                    "Todo lo incluido en Fase 01",
+                    "Acceso Multi-Pantalla simultáneo",
+                    "Infraestructura Cloud (Relé Firebase)",
+                    "Control de Efectivo Blindado",
+                    "Monitoreo Remoto por Celular",
+                    "Acceso a Reportes Históricos"
+                ],
+                waMsg: "Hola. Me interesa la Fase 02 (Multi-Pantalla) para tener control total de mi negocio desde cualquier lugar. ¿Cómo podemos empezar?"
+            }
+        };
+
+        function openPlanModal(id) {
+            const plan = planesData[id];
+            if (!plan) return;
+
+            const modal = document.getElementById('plan-detail-modal');
+            const container = document.getElementById('plan-modal-body');
+            
+            // Generar lista de características
+            const featuresHTML = plan.caracteristicas.map(f => `
+                <div class="modal-feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>${f}</span>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="glass-card rounded-[2.5rem] p-8 md:p-10 flex flex-col relative border-emerald-500/30">
+                    <button onclick="closePlanModal()" class="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                    
+                    <div class="mb-6">
+                        <span class="text-emerald-500 font-black text-[10px] uppercase tracking-[0.3em] block mb-1">${plan.fase}</span>
+                        <h3 class="text-4xl font-black text-white italic tracking-tighter uppercase leading-none mb-2">${plan.titulo}</h3>
+                        <p class="text-emerald-400 font-bold text-[11px] uppercase tracking-widest">${plan.subtitulo}</p>
+                    </div>
+
+                    <p class="text-slate-400 mb-8 text-sm leading-relaxed">${plan.descripcion}</p>
+                    
+                    <div class="mb-8 p-6 rounded-3xl bg-white/5 border border-white/5 flex items-center justify-between">
+                        <div>
+                            <span class="text-4xl font-black text-white tracking-tighter">$${plan.precioMensual}</span>
+                            <span class="text-slate-500 font-bold text-xs uppercase">/ mes</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[9px] font-black text-slate-500 uppercase block mb-1">Instalación Única</span>
+                            <span class="text-white font-bold">$${plan.precioInstalacion}</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-feature-list mb-10">
+                        ${featuresHTML}
+                    </div>
+
+                    <button onclick="contactPlanWA('${plan.waMsg}')" class="w-full bg-emerald-500 text-slate-950 hover:bg-white font-black py-5 rounded-2xl text-lg transition-all uppercase tracking-tighter flex items-center justify-center gap-3">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        Adquirir Plan
+                    </button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePlanModal() {
+            document.getElementById('plan-detail-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function contactPlanWA(msg) {
+            window.open(`https://wa.me/5491159665917?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // Cerrar modal al hacer click fuera
+        document.getElementById('plan-detail-modal').onclick = function(e) {
+            if (e.target === this) closePlanModal();
+        };
     </script>
 </body>
 
