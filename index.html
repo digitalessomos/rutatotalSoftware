@@ -1312,7 +1312,7 @@
                     <h3 class="text-3xl font-black italic mb-4 uppercase leading-none">Hablar con un <br>Estratega</h3>
                     <p class="text-slate-400 text-sm mb-8 leading-relaxed">¿El caos te está ganando hoy? Saltá la fila. Hablá con nosotros ahora y desactivamos el desorden en minutos.</p>
                     
-                    <button onclick="handleWhatsAppContact()" class="w-full bg-emerald-500 text-slate-950 hover:bg-white font-black py-5 rounded-xl text-lg transition-all uppercase tracking-tighter flex items-center justify-center gap-3">
+                    <button onclick="logLeadAndOpenWA('Landing - Footer', 'Hola! Vengo desde el botón de la Landing. Me gustaría hablar con un estratega para desactivar el caos en mi logística.')" class="w-full bg-emerald-500 text-slate-950 hover:bg-white font-black py-5 rounded-xl text-lg transition-all uppercase tracking-tighter flex items-center justify-center gap-3">
                         <i class="fab fa-whatsapp text-xl"></i>
                         Iniciar WhatsApp
                     </button>
@@ -1360,6 +1360,47 @@
             <!-- El contenido se inyecta dinámicamente -->
         </div>
     </div>
+
+    <script type="module">
+        // --- FIREBASE TRACKING CONFIG ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAC0K_7GdPfZ1idnpa0VkwgZ9zBYOB4PRk",
+            authDomain: "crudfbtest.firebaseapp.com",
+            projectId: "crudfbtest",
+            storageBucket: "crudfbtest.firebasestorage.app",
+            messagingSenderId: "171088113288",
+            appId: "1:171088113288:web:eb8b6e333edce9be90b93d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Función Global de Tracking
+        window.logLeadAndOpenWA = async (source, msg) => {
+            console.log(`📡 [Tracking] Registrando lead desde: ${source}`);
+            
+            try {
+                // Registro silencioso en Firebase
+                await addDoc(collection(db, "leads_inbox"), {
+                    nombre: "Interés WhatsApp",
+                    local: "Click Directo Landing",
+                    source: source,
+                    msg: msg,
+                    status: "new",
+                    timestamp: serverTimestamp()
+                });
+            } catch (e) {
+                console.error("Error logging lead:", e);
+            }
+
+            // Abrir WhatsApp independientemente de si falló el registro
+            const encoded = encodeURIComponent(msg);
+            window.open(`https://wa.me/5491159665917?text=${encoded}`, '_blank');
+        };
+    </script>
 
     <script>
         let currentHeroSlide = 0;
@@ -2016,7 +2057,7 @@
                         ${featuresHTML}
                     </div>
 
-                    <button onclick="contactPlanWA('${plan.waMsg}')" class="w-full bg-emerald-500 text-slate-950 hover:bg-white font-black py-5 rounded-2xl text-lg transition-all uppercase tracking-tighter flex items-center justify-center gap-3">
+                    <button onclick="contactPlanWA('${plan.waMsg}', '${plan.fase}')" class="w-full bg-emerald-500 text-slate-950 hover:bg-white font-black py-5 rounded-2xl text-lg transition-all uppercase tracking-tighter flex items-center justify-center gap-3">
                         <i class="fab fa-whatsapp text-xl"></i>
                         Adquirir Plan
                     </button>
@@ -2032,8 +2073,8 @@
             document.body.style.overflow = '';
         }
 
-        function contactPlanWA(msg) {
-            window.open(`https://wa.me/5491159665917?text=${encodeURIComponent(msg)}`, '_blank');
+        function contactPlanWA(msg, planName) {
+            logLeadAndOpenWA(`Landing - ${planName}`, msg);
         }
 
         // Cerrar modal al hacer click fuera
