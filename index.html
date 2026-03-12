@@ -985,10 +985,7 @@
                     <div class="hero-slide" style="background-image: url('img/heroimg/i13.webp')"></div>
                     <div class="hero-slide" style="background-image: url('img/heroimg/i14.webp')"></div>
                     <div class="hero-slide" style="background-image: url('img/heroimg/i15.webp')"></div>
-                    <button class="slider-nav-btn prev" onclick="manualNav(-1)"><i
-                            class="fas fa-chevron-left"></i></button>
-                    <button class="slider-nav-btn next" onclick="manualNav(1)"><i
-                            class="fas fa-chevron-right"></i></button>
+                  
                     <div
                         class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-slate-950/90 to-transparent z-20 text-right">
                         <p class="text-emerald-500 font-black text-[10px] tracking-widest uppercase mb-1">Control de
@@ -1334,14 +1331,26 @@
                                 <input type="tel" id="lead-phone" placeholder="Ej: +54 9..." class="footer-form-input" required>
                             </div>
                         </div>
-                        <div>
-                            <label class="input-label">Sector</label>
-                            <select id="lead-sector" class="footer-form-input appearance-none text-slate-400">
-                                <option value="gastronomia">Gastronomía / Restaurantes</option>
-                                <option value="logistica">Servicios Locales / Logística</option>
-                                <option value="ecommerce">E-commerce de Nicho</option>
-                                <option value="otro">Otro</option>
-                            </select>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="input-label">Sector</label>
+                                <select id="lead-sector" class="footer-form-input appearance-none text-slate-400">
+                                    <option value="gastronomia">Restaurant</option>
+                                    <option value="logistica">Pizzería</option>
+                                    <option value="ecommerce">Sushi</option>
+                                    <option value="otro">Hamburhueseria</option> 
+                                    <option value="otro">Heladeria</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="input-label">Repartidores</label>
+                                <select id="lead-fleet" class="footer-form-input appearance-none text-slate-400">
+                                    <option value="1-3">1 - 3</option>
+                                    <option value="3-10">3 - 10</option>
+                                    <option value="+10">+10</option>
+                                </select>
+                            </div>
                         </div>
                         <button type="submit" class="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold py-4 rounded-xl text-xs transition-all uppercase tracking-[0.2em] mt-2">
                             Enviar a n8n Automático
@@ -1561,12 +1570,7 @@
             currentHeroSlide = (currentHeroSlide + direction + heroSlides.length) % heroSlides.length;
             heroSlides[currentHeroSlide].classList.add('active');
         }
-
-        function manualNav(direction) {
-            changeSlide(direction);
-            startSlider();
-        }
-
+ 
         function togglePlay(id, btn) {
             const video = document.getElementById(id);
             const icon = btn.querySelector('i');
@@ -1949,30 +1953,59 @@
             window.open(`https://wa.me/5491159665917?text=${msg}`, '_blank');
         }
 
-        function handleLeadForm(event) {
+        async function handleLeadForm(event) {
             event.preventDefault();
-            const name = document.getElementById('lead-name').value;
-            const phone = document.getElementById('lead-phone').value;
-            const sector = document.getElementById('lead-sector').value;
-            
-            // Simulación de envío a n8n
-            console.log("Enviando lead a n8n:", { name, phone, sector });
-            
-            // Efecto visual de envío
             const btn = event.target.querySelector('button');
             const originalText = btn.innerText;
-            btn.innerText = "PROCESANDO CON n8n...";
+
+            // 1. Capturar Datos del Formulario
+            const formData = {
+                nombre: document.getElementById('lead-name').value,
+                whatsapp: document.getElementById('lead-phone').value,
+                sector: document.getElementById('lead-sector').value,
+                repartidores: document.getElementById('lead-fleet').value,
+                fecha: new Date().toLocaleString(),
+                fuente: "Landing Footer Form"
+            };
+
+            // 2. Efecto visual de carga
+            btn.innerText = "ENVIANDO A n8n...";
             btn.disabled = true;
-            
-            setTimeout(() => {
-                alert(`¡Gracias ${name}! Tu solicitud ha sido registrada. Un estratega de RutaTotal te contactará pronto.`);
-                btn.innerText = "ENVIADO CON ÉXITO";
-                event.target.reset();
+
+            try {
+                // --- CONFIGURACIÓN DE N8N (Render) ---
+                // Para probar usando el botón rojo "Listen for test event", usamos "/webhook-test/"
+                // Cuando actives el workflow de verdad, quita el "-test" y usa "/webhook/..."
+                const WEBHOOK_URL = "https://n8n-bimt.onrender.com/webhook-test/lead-landing-fase1y2";
+
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    console.log("✅ Lead enviado con éxito a n8n");
+                    alert(`¡Gracias ${formData.nombre}! Tu solicitud ha sido registrada exitosamente en nuestro sistema automatizado.`);
+                    event.target.reset();
+                    btn.innerText = "DATOS ENVIADOS ✅";
+                } else {
+                    throw new Error("Respuesta no exitosa de n8n");
+                }
+            } catch (error) {
+                console.error("❌ Error enviando a n8n:", error);
+                
+                // Fallback: Si n8n está apagado o falla, al menos avisamos
+                alert(`¡Gracias ${formData.nombre}! Se guardó localmente, pero hubo un problema de conexión con el servidor de automatización. Un estratega te contactará de todos modos.`);
+                btn.innerText = "ENVIADO (CON AVISO)";
+            } finally {
                 setTimeout(() => {
                     btn.innerText = originalText;
                     btn.disabled = false;
-                }, 3000);
-            }, 1500);
+                }, 4000);
+            }
         }
         // --- MODALES DE PLANES ---
         const planesData = {

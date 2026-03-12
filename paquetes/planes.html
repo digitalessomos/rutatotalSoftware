@@ -223,9 +223,9 @@
                     <select id="lead-fleet" required
                         class="w-full form-input px-5 py-4 rounded-xl font-medium appearance-none">
                         <option value="" disabled selected>Selecciona una escala</option>
-                        <option value="1-5">1 a 5 (Gestión Básica)</option>
-                        <option value="5-15">5 a 15 (Logística Activa)</option>
-                        <option value="15+">Más de 15 (Torre de Control)</option>
+                        <option value="1-3">1 a 3 (Fase 01)</option>
+                        <option value="3-10">3 a 10 (Fase 02/03)</option>
+                        <option value="+10">Más de 10 (Torre de Control)</option>
                     </select>
                 </div>
 
@@ -482,8 +482,8 @@
                     if (this.step === 'VOLUME') {
                         this.botSay("Entendido. Para darte el diagnóstico correcto, ¿cuántos repartidores manejas actualmente?");
                         this.renderOptions([
-                            { text: "1 a 5 Repartidores", value: "1-5" },
-                            { text: "5 a 10 Repartidores", value: "5-10" },
+                            { text: "1 a 3 Repartidores", value: "1-3" },
+                            { text: "3 a 10 Repartidores", value: "3-10" },
                             { text: "+10 Repartidores", value: "+10" }
                         ]);
                     }
@@ -507,25 +507,25 @@
                 let script = "";
 
                 if (specialty === 'pizzeria') {
-                    if (volume === '1-5') {
+                    if (volume === '1-3') {
                         script = "Gestionar repartidores en una pizzería es una pesadilla de tiempos. Una optimización del 15% en tus rutas te ahorraría combustible y evitaría que las pizzas lleguen frías. ¿Quieres ver cómo lo automatizamos?";
                     } else {
                         script = "En el negocio de la pizza, el tiempo es calidad. Si tus repartidores se pierden o se amontonan, la masa llega fría y el cliente no vuelve. Con tantas unidades, necesitas rutas optimizadas. ¿Listo para que lleguen siempre calientes?";
                     }
                 } else if (specialty === 'sushi') {
-                    if (volume === '1-5') {
+                    if (volume === '1-3') {
                         script = "En el sushi, 10 minutos de retraso arruinan la experiencia. Con varios repartidores, el dueño suele perder horas coordinando. ¿Qué harías si recuperaras esas horas garantizando frescura?";
                     } else {
                         script = "El sushi es arte y logística de precisión. Un minuto de más afecta la frescura. Para una operación de muchos repartidores, necesitas trazabilidad total. Evita el '¿donde está mi pedido?'. ¿Te gustaría automatizarlo?";
                     }
                 } else if (specialty === 'burgers') {
-                    if (volume === '1-5') {
+                    if (volume === '1-3') {
                         script = "Tus 'horas pico' son brutales. Cuando caen 20 pedidos en 10 minutos, el caos del mostrador se traslada a la calle. Necesitas un despacho quirúrgico. ¿Quieres ver cómo despejamos tu mostrador?";
                     } else {
                         script = "<b>¡El Fin de las Preguntas al Aire!</b> 🛑<br><br>Basta de preguntar: <i>¿Quién se llevó el pedido 45? ¿Hace cuánto salió?</i>. Con nuestra interfaz visual, solo miras la pantalla y ves al repartidor y el tiempo exacto. ¿Listo para la Torre de Control?";
                     }
                 } else { // Restaurante
-                    if (volume === '1-5') {
+                    if (volume === '1-3') {
                         script = "Gestionar salón y delivery al mismo tiempo es de malabaristas. Vamos a profesionalizar tu logística para que te enfoques en el sabor, no en el mapa. ¿Te enviamos la propuesta?";
                     } else {
                         script = "<b>Torre de Control Digital</b> 🗼<br><br>En un restaurante con mucho flujo, no se necesita preguntar. Nuestra trazabilidad 360 por colores te permite saber quién tiene cada pedido solo con mirar el monitor. ¿Te gustaría implementarlo?";
@@ -604,7 +604,7 @@
                 this.botSay("<b>¡Análisis completado!</b> 🎯 El sistema está generando tu propuesta estratégica.");
 
                 // Recomendación de Plan
-                const planRecomendado = (this.data.volume === '1-5') ? 'Fase 01: Organización' : 'Fase 02: Conectividad';
+                const planRecomendado = (this.data.volume === '1-3') ? 'Fase 01: Organización' : 'Fase 02: Conectividad';
                 this.data.plan = planRecomendado;
 
                 // Mapeo de CTAs personalizados por nicho
